@@ -6,15 +6,47 @@
 # I preferred to have 0 on red and green, while before my environments were 0 on red and 127 on green 
 
 # List of folder paths
-folder_paths = ['/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w5',
-                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w10',
-                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w20',
-                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w25',
-                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w50',
-                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w100',]
+folder_paths = ['/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w5',
+                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w10',
+                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w20',
+                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w25',
+                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w50',
+                '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/100k_iter/w100',]
 # Define folder labels
 folder_labels = [5, 10, 20, 25, 50, 100]
+############################################################################################################
+############################################################################################################
 
+# ###########################################################################################################
+# ############################################################################################################
+# # List of folder paths
+# folder_paths = ['/Users/gb4818/Downloads/PE/Friends/Breed_only_on/REvoSim_output',
+#                 '/Users/gb4818/Downloads/PE/Lights/Breed_only_on/REvoSim_output',
+#                 '/Users/gb4818/Downloads/PE/Noise/Breed_only_on/REvoSim_output',]
+# # Define folder labels
+# folder_labels = ['Friends', 'Lights', 'Noise']
+# ###########################################################################################################
+# ############################################################################################################
+
+
+# ###########################################################################################################
+# ############################################################################################################
+# # These folders contain simulations run with a toriodal environent and dispersion parameter of 15. 
+# # The environment is sin function on blue, and 0 on both red and green.
+# # Basically I re-run these because I realised my environments were wrong and not perfectly toriodal and also 
+# # I preferred to have 0 on red and green, while before my environments were 0 on red and 127 on green 
+
+# # List of folder paths
+# folder_paths = ['/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w5',
+#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w10',
+#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w20',
+#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w25',
+#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w50',
+#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w100',]
+# # Define folder labels
+# folder_labels = [5, 10, 20, 25, 50, 100]
+# ############################################################################################################
+# ############################################################################################################
 
 # ############################################################################################################
 # ############################################################################################################
@@ -25,7 +57,7 @@ folder_labels = [5, 10, 20, 25, 50, 100]
 # # List of folder paths
 # folder_paths = ['/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/w50_1000',]
 # # Define folder labels
-# folder_labels = [50]
+# folder_labels = [50,]
 # ############################################################################################################
 # ############################################################################################################
 
