@@ -4,34 +4,13 @@ import pandas as pd
 import re
 
 # Folder Paths
-# # List of folder paths
-# folder_paths = ['/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/12dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/3dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/20dp', 
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/60dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/4dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/70dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/30dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/15dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/40dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/5dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/10dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/50dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/6dp',
-#                 '/Users/gb4818/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Rev-res-in/dispersion/8dp']
-# # Define folder labels
-# folder_labels = [12, 3, 20, 60, 4, 70, 30, 15, 40, 5, 10, 50, 6, 8]
-
-# Folder Paths
 # List of folder paths
-folder_paths = ['/rds/general/user/gb4818/ephemeral/results_w50_3dp',
-                '/rds/general/user/gb4818/ephemeral/results_w50_4dp',
-		'/rds/general/user/gb4818/ephemeral/results_w50_5dp',
-		'/rds/general/user/gb4818/ephemeral/results_w50_6dp',
-		'/rds/general/user/gb4818/ephemeral/results_w50_8dp']
-# Define folder labels
-folder_labels = [3, 4, 5, 6, 8]
+folder_paths = ['/rds/general/user/gb4818/ephemeral/results_w50_10dp']
 
+# Define folder labels
+folder_labels = [10]
+# Extract the label from the folder_labels list
+label = folder_labels[0]
 
 ########################
 ###LOGS SPECIES COUNT###
@@ -62,41 +41,44 @@ for i, folder_path in enumerate(folder_paths):
 # Concatenate all data in a pandas dataframe
 combined_df = pd.concat(dataframes, ignore_index=True)
 # save in a csv file
-combined_df.to_csv('w50_xdp_iterations_species_richness.csv')
+combined_df.to_csv(f'w50_{label}dp_iterations_species_richness.csv')
 
 ###############################
 ### LOGS ENVIRONMENT VALUES ###
 ###############################
-# importing all data from all file so I have a table that I can access later. 
 all_sin = []
 
-for i, folder_path in enumerate(folder_paths):
-    # creating a loop that will take all of the files, all of the individuals on a transect in the middle of the picture
-    # create an empty dataframe to store the transects in the current folder
-    colour_transects = pd.DataFrame(columns=['X coord', 'environment B value', 'Simulation'])
-            
-    for filename in os.listdir(folder_path):
-        match = re.match(r'REvoSim_individuals_data_.*\.txt', filename)
-        if match:
-            file_path = os.path.join(folder_path, filename)
-            # import file
-            df = pd.read_csv(file_path, sep=',', header=0, skiprows=12, usecols=[1, 2, 11])
-            # take all the records that have y = 49 (a transect in the middle)
-            df = df[df['Y coord'] == 49]
-            colour_cell = df[['X coord', 'environment B value']]
-            colour_cell = colour_cell.drop_duplicates(subset=['X coord', 'environment B value'], keep='first')
-            colour_cell['Simulation'] = filename
-            
-            colour_transects = pd.concat([colour_transects, colour_cell], ignore_index=True)
-            colour_transects['dp'] = folder_labels[i]
+for folder_path, folder_label in zip(folder_paths, folder_labels):
+    # Get all files in the folder
+    files = os.listdir(folder_path)
+    # Choose a random file
+    random_file = random.choice(files)
+    file_path = os.path.join(folder_path, random_file)
     
-    # Append the stats dataframe to the list
-    all_sin.append(colour_transects)
-# Concatenate all DataFrames from different folders into a single DataFrame
-combined_colsin = pd.concat(all_sin, ignore_index=True)
+    try:
+        # Import only the selected random file
+        df = pd.read_csv(file_path, sep=',', header=0, skiprows=12, usecols=[1, 2, 11])
+        df = df[df['Y coord'] == 49]
+        colour_cell = df[['X coord', 'environment B value']]
+        colour_cell = colour_cell.drop_duplicates(subset=['X coord', 'environment B value'], keep='first')
+        colour_cell['Simulation'] = random_file
+        
+        # Add folder label
+        colour_cell['dp'] = folder_label
+        
+        all_sin.append(colour_cell)
+    except UnicodeDecodeError:
+        print(f"UnicodeDecodeError: Error reading file {file_path}")
 
-# save in a csv file
-combined_colsin.to_csv('w50_xdp_environment_values.csv')
+# Check if any data was successfully read
+if all_sin:
+    # Concatenate all DataFrames from different folders into a single DataFrame
+    combined_colsin = pd.concat(all_sin, ignore_index=True)
+
+    # Save to a CSV file
+    combined_colsin.to_csv(f'w50_{label}dp_environment_values.csv')
+else:
+    print("No valid data was successfully read from any file.")
 
 ###################################
 ### LOGS SPECIES RICHNESS GRIDS ###
@@ -132,7 +114,7 @@ for i, folder_path in enumerate(folder_paths):
 # Concatenate all DataFrames from different folders into a single DataFrame
 grids = pd.concat(all_grids, ignore_index=True)
 # save grids into a csv file
-grids.to_csv('w50_xdp_grids_species_richness.csv')
+grids.to_csv(f'w50_{label}dp_grids_species_richness.csv')
 
 #########################################################################################
 ### GENETIC DIVERSITY FUNCTIONS DEFINITION
@@ -223,7 +205,7 @@ for i, folder_path in enumerate(folder_paths):
 diversity = pd.concat(dataframes, ignore_index=True)
 # Let's create a table with average diversity for each simulation
 average_div_df = diversity.groupby(['dp','Simulation'])['Diversity'].mean().reset_index()
-average_div_df.to_csv('w50_xdp_genetic_diversity.csv')
+average_div_df.to_csv(f'w50_{label}dp_genetic_diversity.csv')
 
 
 ##############################
@@ -256,5 +238,5 @@ for i, folder_path in enumerate(folder_paths):
 
 # Concatenate all DataFrames from different folders into a single DataFrame
 grid_div = pd.concat(all_grids_div, ignore_index=True)# save grids into a csv file
-grid_div.to_csv('w50_xdp_grids_genetic_diversity.csv')
+grid_div.to_csv(f'w50_{label}dp_grids_genetic_diversity.csv')
 
