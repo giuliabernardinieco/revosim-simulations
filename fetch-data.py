@@ -43,43 +43,6 @@ combined_df = pd.concat(dataframes, ignore_index=True)
 # save in a csv file
 combined_df.to_csv(f'w50_{label}dp_iterations_species_richness.csv')
 
-###############################
-### LOGS ENVIRONMENT VALUES ###
-###############################
-all_sin = []
-
-for folder_path, folder_label in zip(folder_paths, folder_labels):
-    # Get all files in the folder
-    files = os.listdir(folder_path)
-    # Choose a random file
-    random_file = random.choice(files)
-    file_path = os.path.join(folder_path, random_file)
-    
-    try:
-        # Import only the selected random file
-        df = pd.read_csv(file_path, sep=',', header=0, skiprows=12, usecols=[1, 2, 11])
-        df = df[df['Y coord'] == 49]
-        colour_cell = df[['X coord', 'environment B value']]
-        colour_cell = colour_cell.drop_duplicates(subset=['X coord', 'environment B value'], keep='first')
-        colour_cell['Simulation'] = random_file
-        
-        # Add folder label
-        colour_cell['dp'] = folder_label
-        
-        all_sin.append(colour_cell)
-    except UnicodeDecodeError:
-        print(f"UnicodeDecodeError: Error reading file {file_path}")
-
-# Check if any data was successfully read
-if all_sin:
-    # Concatenate all DataFrames from different folders into a single DataFrame
-    combined_colsin = pd.concat(all_sin, ignore_index=True)
-
-    # Save to a CSV file
-    combined_colsin.to_csv(f'w50_{label}dp_environment_values.csv')
-else:
-    print("No valid data was successfully read from any file.")
-
 ###################################
 ### LOGS SPECIES RICHNESS GRIDS ###
 ###################################
