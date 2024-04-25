@@ -10,7 +10,7 @@ import time
 folder_paths = ["/Users/gb4818/Desktop/REvoSim_output/30dp"]
 
 # Define folder labels
-folder_labels = [15]
+folder_labels = [30]
 # Extract the label from the folder_labels list
 label = folder_labels[0]
 COL_ITER_INDEX = 0
@@ -46,7 +46,6 @@ for folder_i, folder_path in tqdm(enumerate(folder_paths)):
         print(f"Reading from {file_path}")
 
         # read data
-        start = time.perf_counter()
         with open(file_path, "r") as in_file, open(out_filename, "a") as out_file:
             start = time.perf_counter()
             line_counter = 0
@@ -58,7 +57,7 @@ for folder_i, folder_path in tqdm(enumerate(folder_paths)):
                     continue
                 
                 line_cols = line.split(",")
-                species_value = f"{line_cols[COL_ITER_INDEX]},{line_cols[COL_SPECIES_COUNT_INDEX]},{filename},{folder_i}"
+                species_value = f"{line_cols[COL_ITER_INDEX]},{line_cols[COL_SPECIES_COUNT_INDEX]},{filename},{folder_labels[folder_i]}"
                 if species_value not in species_values_set:
                     # do something
                     species_values_set.add(species_value)
@@ -66,6 +65,7 @@ for folder_i, folder_path in tqdm(enumerate(folder_paths)):
                 
                 line_counter += 1
             time_taken = time.perf_counter() - start
+            print(len(species_values_set))
             print(f"time taken to process file {file_path} = {time_taken:0.3f}s") 
 
 df = pd.read_csv(out_filename)
@@ -73,4 +73,4 @@ print(df.head())
 print(len(df))
 
 
-print("ALl done.")
+print("ALl done : )")
