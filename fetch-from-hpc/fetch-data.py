@@ -5,42 +5,42 @@ import re
 
 # Folder Paths
 # List of folder paths
-folder_paths = ['/Users/gb4818/Desktop/REvoSim_output/25dp/REvoSim_output']
+folder_paths = ['/rds/general/user/gb4818/ephemeral/results_w50_30dp']
 # Define folder labels
-folder_labels = [25]
+folder_labels = [30]
 # Extract the label from the folder_labels list
 label = folder_labels[0]
 
-# ########################
-# ###LOGS SPECIES COUNT###
-# ########################
-# # Create a list to store individual DataFrames
-# dataframes = []
+########################
+###LOGS SPECIES COUNT###
+########################
+# Create a list to store individual DataFrames
+dataframes = []
 
-# for i, folder_path in enumerate(folder_paths):
-#     # Loop through each file in the folder and read it into a DataFrame
-#     for filename in os.listdir(folder_path):
-#         match = re.match(r'REvoSim_log_.*\.txt', filename)
-#         if match:
-#             file_path = os.path.join(folder_path, filename)
-#             #df = pd.read_csv(file_path, sep=',', header=0, usecols=[0, 5], names=['Iteration_number', 'Species_count'])
+for i, folder_path in enumerate(folder_paths):
+    # Loop through each file in the folder and read it into a DataFrame
+    for filename in os.listdir(folder_path):
+        match = re.match(r'REvoSim_log_.*\.txt', filename)
+        if match:
+            file_path = os.path.join(folder_path, filename)
+            #df = pd.read_csv(file_path, sep=',', header=0, usecols=[0, 5], names=['Iteration_number', 'Species_count'])
             
-#             df = pd.read_csv(file_path, sep=',', header=0, usecols=[0, 5])
+            df = pd.read_csv(file_path, sep=',', header=0, usecols=[0, 5])
             
-#             # Remove duplicates
-#             df = df.drop_duplicates()
+            # Remove duplicates
+            df = df.drop_duplicates()
             
-#             # Add 'simulation' and 'folder_label' columns
-#             df['Simulation'] = filename
-#             df['dp'] = folder_labels[i]
+            # Add 'simulation' and 'folder_label' columns
+            df['Simulation'] = filename
+            df['dp'] = folder_labels[i]
             
-#             # Append the modified DataFrame to the list
-#             dataframes.append(df)
+            # Append the modified DataFrame to the list
+            dataframes.append(df)
 
-# # Concatenate all data in a pandas dataframe
-# combined_df = pd.concat(dataframes, ignore_index=True)
-# # save in a csv file
-# combined_df.to_csv(f'w50_{label}dp_iterations_species_richness.csv')
+# Concatenate all data in a pandas dataframe
+combined_df = pd.concat(dataframes, ignore_index=True)
+# save in a csv file
+combined_df.to_csv(f'w50_rednoise_{label}dp_iterations_species_richness.csv')
 
 ###################################
 ### LOGS SPECIES RICHNESS GRIDS ###
@@ -76,7 +76,7 @@ for i, folder_path in enumerate(folder_paths):
 # Concatenate all DataFrames from different folders into a single DataFrame
 grids = pd.concat(all_grids, ignore_index=True)
 # save grids into a csv file
-grids.to_csv(f'w50_{label}dp_grids_species_richness.csv')
+grids.to_csv(f'w50_rednoise_{label}dp_grids_species_richness.csv')
 
 # #########################################################################################
 # ### GENETIC DIVERSITY FUNCTIONS DEFINITION
